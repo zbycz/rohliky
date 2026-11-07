@@ -597,11 +597,29 @@ table.products tr:last-child td {
 }
 
 .cart-name {
+  display: block;
   font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.product-name,
+.cell-name,
+.cart-name {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cell-name {
+  display: inline-block;
+}
+
+.product-name:hover,
+.cell-name:hover,
+.cart-name:hover {
+  text-decoration: underline;
 }
 
 .cart-sub {

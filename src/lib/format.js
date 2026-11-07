@@ -1,6 +1,6 @@
 export function money(value, currency = "Kč") {
   if (value == null || Number.isNaN(Number(value))) return "";
-  return `${Number(value).toLocaleString("cs-CZ", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currency}`;
+  return `${Math.round(Number(value)).toLocaleString("cs-CZ")} ${currency}`;
 }
 
 export function unitPrice(price, unit) {
@@ -8,18 +8,19 @@ export function unitPrice(price, unit) {
 }
 
 export function availability(stock) {
-  if (!stock) return { tone: "muted", label: "Neznámá dostupnost" };
+  if (!stock) return { tone: "muted", label: "Neznámá dostupnost", orderable: false };
   const status = stock.availabilityStatus;
   if (status === "AVAILABLE") {
     const limited = stock.maxAvailableAmount != null && stock.maxAvailableAmount <= 5;
     return limited
-      ? { tone: "warn", label: `Posledních ${stock.maxAvailableAmount} ks` }
-      : { tone: "ok", label: "Skladem" };
+      ? { tone: "warn", label: `Posledních ${stock.maxAvailableAmount} ks`, orderable: true }
+      : { tone: "ok", label: "Skladem", orderable: true };
   }
-  if (status === "OUT_OF_STOCK" || status === "NOT_AVAILABLE") {
-    return { tone: "muted", label: "Není skladem" };
+  const orderable = status === "PREORDER";
+  if (stock.availabilityReason) {
+    return { tone: orderable ? "warn" : "muted", label: stock.availabilityReason, orderable };
   }
-  return { tone: "warn", label: "Omezeně dostupné" };
+  return { tone: "muted", label: "Není skladem", orderable: false };
 }
 
 export function cardPrice(card) {

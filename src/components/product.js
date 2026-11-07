@@ -45,7 +45,7 @@ export function QtyControl(product) {
   const item = cartItemFor(product.id);
   const quantity = item ? item.quantity : 0;
   const busy = Boolean(data.busy[product.id]);
-  const unavailable = product.availability.label === "Není skladem";
+  const unavailable = product.availability.orderable === false;
 
   if (quantity <= 0) {
     return h(
@@ -82,7 +82,7 @@ export function ProductCard(product) {
     h(
       "div",
       { class: "product-body" },
-      h("div", { class: "product-name", title: product.name }, product.name),
+      h("a", { class: "product-name", href: product.url, target: "_blank", rel: "noreferrer", title: product.name }, product.name),
       product.amount ? h("div", { class: "product-amount" }, product.amount) : null,
       PriceRow(product),
       AvailabilityBadge(product),
@@ -105,7 +105,7 @@ export function ProductRow(product) {
         h(
           "div",
           null,
-          h("div", { class: "cell-name" }, product.name),
+          h("a", { class: "cell-name", href: product.url, target: "_blank", rel: "noreferrer" }, product.name),
           product.amount ? h("div", { class: "cell-sub" }, product.amount) : null
         )
       )

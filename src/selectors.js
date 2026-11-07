@@ -2,10 +2,18 @@ import { config, data } from "./store.js";
 import { availability, cardPrice } from "./lib/format.js";
 
 const IMAGE_CDN = "https://cdn.rohlik.cz";
+const PRODUCT_URL = "https://www.rohlik.cz";
 
 function imageUrl(path) {
   if (!path) return "";
   return /^https?:\/\//i.test(path) ? path : `${IMAGE_CDN}${path}`;
+}
+
+function productUrl(productId, slug) {
+  if (!productId) return "";
+  if (!slug) return `${PRODUCT_URL}/${productId}`;
+  const tail = slug.startsWith(`${productId}-`) ? slug : `${productId}-${slug}`;
+  return `${PRODUCT_URL}/${tail}`;
 }
 
 function fallbackCategoryName() {
@@ -21,6 +29,7 @@ export function favoriteToView(card) {
   return {
     id: card.productId,
     name: card.name,
+    url: productUrl(card.productId, card.slug),
     image: imageUrl(card.image && card.image.path),
     amount: card.textualAmount || "",
     unit: card.unit || "",
@@ -37,11 +46,12 @@ export function cartItemToView(item) {
     orderFieldId: item.orderFieldId,
     quantity: item.quantity,
     name: item.productName,
+    url: productUrl(item.productId, item.baseLink),
     image: imageUrl(item.imgPath),
     amount: item.textualAmount || "",
     unit: item.unit || "",
     price: { final: item.price, original: null, onSale: false, unit: item.originalPricePerUnit, currency: "Kč" },
-    availability: { tone: "ok", label: "V košíku" },
+    availability: { tone: "ok", label: "V košíku", orderable: true },
     isFavorite: false,
     categoryName: item.primaryCategoryName || null,
   };

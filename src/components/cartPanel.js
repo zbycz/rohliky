@@ -13,7 +13,7 @@ function CartRow(item) {
     h(
       "div",
       { class: "cart-main" },
-      h("div", { class: "cart-name", title: item.name }, item.name),
+      h("a", { class: "cart-name", href: item.url, target: "_blank", rel: "noreferrer", title: item.name }, item.name),
       h("div", { class: "cart-sub" }, money(item.price.final, item.price.currency))
     ),
     h(
