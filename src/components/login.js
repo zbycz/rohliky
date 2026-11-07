@@ -1,7 +1,6 @@
 import { h } from "../lib/dom.js";
 import { config, data, setConfig, setData } from "../store.js";
 import { login } from "../actions.js";
-import { hasProxy } from "../api/client.js";
 import { Banner, Spinner } from "./common.js";
 
 const form = {
@@ -30,12 +29,6 @@ export function LoginView() {
       { class: "card pad" },
       h("h1", { style: { marginTop: "0" } }, "Přihlášení do Rohlíku"),
       h("p", { class: "hint" }, "Přihlas se svým účtem Rohlik.cz. Vše se ukládá jen do tohoto prohlížeče."),
-      hasProxy()
-        ? null
-        : Banner(
-            "info",
-            "Prohlížeč nemůže kvůli CORS mluvit s Rohlik.cz napřímo. V „Nastavení“ zadej adresu vlastní proxy (viz README)."
-          ),
       data.status === "error" && data.error ? Banner("error", data.error) : null,
       h(
         "form",

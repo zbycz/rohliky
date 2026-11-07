@@ -13,11 +13,12 @@ vázané na předchozí písemný souhlas). Dávej pozor na rate-limiting.
 Statická jednostránková aplikace na `index.html` (bez buildstepu, čisté ES6
 moduly, žádné závislosti): přihlášení do Rohlik.cz, oblíbené položky podle
 kategorií, přepínač mřížka/tabulka, přidávání do košíku, dostupnost pro zvolenou
-adresu a přehled košíku. Běží z GitHub Pages (workflow `.github/workflows/pages.yml`).
+adresu a přehled košíku.
 
-Kvůli CORS se ale prohlížeč nemůže přihlásit k Rohlik.cz napřímo — appka proto
-používá malou vlastní proxy (`proxy/rohlik-proxy.js`, Cloudflare Worker), jejíž
-adresu zadáš v Nastavení. Podrobnosti níže.
+Běží na Cloudflare Pages: **https://rohliky.pages.dev**. Serverovou část (kvůli
+CORS a cookies) řeší Pages Function na `/rohlik/*` na **stejné doméně**, takže
+žádné CORS neexistuje. Adresa je zadrátovaná (konstanta `PROXY_PATH`
+v `src/api/client.js`) a v UI se nenastavuje. Podrobnosti níže.
 
 ## Regiony
 
@@ -192,40 +193,28 @@ python3 rohlik_api_explore.py
 
 ## Aplikace — jak spustit
 
-Appku jde hostovat dvěma způsoby (oboje zdarma). Liší se jen v tom, kde běží
-serverová část, která řeší CORS a cookies.
+Appka běží na **https://rohliky.pages.dev**. Stačí se přihlásit e-mailem a
+heslem — proxy na `/rohlik` je zadrátovaná a na stejné doméně (žádné CORS).
+Alternativně lze do Nastavení vložit existující `PHPSESSION`
+(DevTools → Application → Cookies → rohlik.cz).
 
-### A) Cloudflare Pages + Pages Functions (doporučeno)
+### Nasazení (Cloudflare Pages, bez buildu)
 
-Statický web i proxy běží na **stejné doméně** → žádné CORS neexistuje.
+Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git** →
+repo `zbycz/rohliky`; Framework preset **None**, Build command prázdný,
+Build output directory **`/`**. Adresář `functions/`
+(`functions/rohlik/[[path]].js`) se nasadí automaticky a obsluhuje `/rohlik/*`.
 
-1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git**,
-   vyber repo `zbycz/rohliky`.
-2. Build nastavení: Framework preset **None**, Build command prázdný,
-   Build output directory **`/`**.
-3. Deploy → dostaneš `https://<projekt>.pages.dev`. Adresář `functions/`
-   (`functions/rohlik/[[path]].js`) se nasadí automaticky a obsluhuje `/rohlik/*`.
-4. Otevři appku a v **Nastavení** nastav Proxy URL na
-   `https://<projekt>.pages.dev/rohlik`. Ulož a přihlas se.
+### Alternativa: statika + samostatný Worker
 
-### B) Statický web + samostatný Cloudflare Worker
+Když nechceš Pages Functions, nasaď proxy jako Worker
+(`cd proxy && npx wrangler deploy`) a v `src/api/client.js` přepiš `PROXY_PATH`
+z `/rohlik` na plnou URL workeru (`https://rohlik-proxy.<ucet>.workers.dev`).
+Worker posílá CORS hlavičky, protože v tu chvíli jde o cross-origin.
 
-Statika třeba na GitHub Pages, proxy jako separátní Worker (posílá CORS
-hlavičky, které jsou v `proxy/rohlik-proxy.js`).
+### Bez session
 
-1. `cd proxy && npx wrangler deploy` (worker `rohlik-proxy`, konfig v
-   `proxy/wrangler.toml`). Nebo dashboard → Workers → Create → vlož obsah
-   `proxy/rohlik-proxy.js`.
-2. V **Nastavení** appky vlož URL workeru
-   (`https://rohlik-proxy.<ucet>.workers.dev`).
-
-### Společné
-
-- Přihlas se e-mailem a heslem. Alternativně lze do Nastavení vložit existující
-  `PHPSESSION` token z DevTools → Application → Cookies → rohlik.cz.
-- Bez proxy se appka načte, ale přihlášení, oblíbené ani košík nebudou fungovat
-  (prohlížeč kvůli CORS nemůže volat Rohlik.cz s přihlášením — `PHPSESSION` je
-  HttpOnly a bez `SameSite`, takže se na cross-site request nepošle).
+Bez přihlášení appka nic nezobrazí (oblíbené i košík vyžadují session).
 
 ### Co appka umí
 

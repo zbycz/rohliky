@@ -9,21 +9,10 @@ export class ApiError extends Error {
   }
 }
 
-export function hasProxy() {
-  return Boolean(config.api.proxyUrl);
-}
-
-export function canUseAccount() {
-  return hasProxy();
-}
+const PROXY_PATH = "/rohlik";
 
 function resolveUrl(path) {
-  const proxy = (config.api.proxyUrl || "").replace(/\/+$/, "");
-  const target = `${(config.api.baseUrl || "").replace(/\/+$/, "")}${path}`;
-  if (!proxy) return target;
-  const base = new URL(proxy);
-  const pathname = base.pathname.replace(/\/+$/, "");
-  return `${base.origin}${pathname}${path}`;
+  return `${PROXY_PATH}${path}`;
 }
 
 function extractMessage(payload, status) {

@@ -1,6 +1,5 @@
 import * as api from "./api/rohlik.js";
 import { config, data, saveConfig, setConfig, setData, toast } from "./store.js";
-import { hasProxy } from "./api/client.js";
 
 const CATEGORY_CONCURRENCY = 6;
 
@@ -74,10 +73,6 @@ export async function refresh() {
 }
 
 export async function login(email, password, remember) {
-  if (!hasProxy()) {
-    toast("Nejdřív nastav proxy server (Nastavení).", "error");
-    return;
-  }
   setData({ status: "loading", error: null });
   try {
     const payload = await api.login(email, password);

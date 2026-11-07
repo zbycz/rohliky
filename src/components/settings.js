@@ -38,11 +38,6 @@ function onSave(event) {
   event.preventDefault();
   const elements = event.target.elements;
   setConfig({
-    api: {
-      ...config.api,
-      proxyUrl: elements.proxyUrl.value.trim(),
-      baseUrl: elements.baseUrl.value.trim() || "https://www.rohlik.cz",
-    },
     session: elements.session.value.trim(),
     address: { ...config.address, query: elements.addressQuery.value.trim() },
   });
@@ -79,8 +74,6 @@ export function SettingsModal() {
         h(
           "form",
           { onSubmit: onSave },
-          field("Proxy URL (CORS)", "proxyUrl", config.api.proxyUrl, "https://tvuj-cors-proxy.workers.dev"),
-          field("Základní URL Rohlik.cz", "baseUrl", config.api.baseUrl, "https://www.rohlik.cz"),
           field("Session token (PHPSESSION)", "session", config.session, "nepovinné, raději se přihlas formulářem"),
           field("Doručovací adresa (popisek)", "addressQuery", config.address.query, "Ke Džbánu 8, Praha 6"),
           data.addresses.length ? h("div", { class: "field" }, h("label", null, "Aktivní uložená adresa"), addressSelect()) : null,

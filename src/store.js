@@ -3,7 +3,6 @@ const STORAGE_KEY = "rohliky";
 function defaults() {
   return {
     version: 1,
-    api: { baseUrl: "https://www.rohlik.cz", proxyUrl: "" },
     session: "",
     view: "grid",
     address: { query: "Ke Džbánu 8, Praha 6", currentId: null },
