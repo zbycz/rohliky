@@ -8,6 +8,17 @@ Používáním ber na vědomí Obchodní podmínky Rohlik.cz. Hromadné stahová
 je nad rámec běžného používání e-shopu (u oficiálního MCP serveru je výslovně
 vázané na předchozí písemný souhlas). Dávej pozor na rate-limiting.
 
+## Webová aplikace
+
+Statická jednostránková aplikace na `index.html` (bez buildstepu, čisté ES6
+moduly, žádné závislosti): přihlášení do Rohlik.cz, oblíbené položky podle
+kategorií, přepínač mřížka/tabulka, přidávání do košíku, dostupnost pro zvolenou
+adresu a přehled košíku. Běží z GitHub Pages (workflow `.github/workflows/pages.yml`).
+
+Kvůli CORS se ale prohlížeč nemůže přihlásit k Rohlik.cz napřímo — appka proto
+používá malou vlastní proxy (`proxy/rohlik-proxy.js`, Cloudflare Worker), jejíž
+adresu zadáš v Nastavení. Podrobnosti níže.
+
 ## Regiony
 
 Základ je `https://www.rohlik.cz`; stejné API mají i další země Rohlik Group:
@@ -178,3 +189,60 @@ python3 rohlik_api_explore.py
 - https://github.com/tomaspavlin/rohlik-mcp — TS MCP server (reverse-engineered API)
 - https://github.com/dvejsada/rohlik_api_python — Python klient (`rohlik-api`)
 - https://github.com/dvejsada/HA-RohlikCZ — Home Assistant integrace
+
+## Aplikace — jak spustit
+
+1. **Proxy (nutné pro přihlášení).** Nahraj `proxy/rohlik-proxy.js` jako Cloudflare
+   Worker (Workers → Create Worker → vložit obsah → Deploy). Vznikne URL typu
+   `https://rohlik-proxy.<tvuj-ucet>.workers.dev`.
+2. **Appka.** Otevři `https://zbycz.github.io/rohliky/`, v „Nastavení“ vlož URL
+   workeru a ulož.
+3. Přihlas se e-mailem a heslem. (Alternativně lze do Nastavení vložit existující
+   `PHPSESSION` token z DevTools → Application → Cookies → rohlik.cz.)
+
+Bez proxy se appka načte, ale přihlášení, oblíbené ani košík nebudou fungovat
+(prohlížeč kvůli CORS nemůže volat Rohlik.cz s přihlášením).
+
+### Co appka umí
+
+- oblíbené položky seskupené podle kategorií (kategorie se dotahují po produktech
+  a kešují se),
+- přepínač **mřížka / tabulka**,
+- přidávání do košíku, změna množství a odebírání,
+- dostupnost pro zvolenou adresu,
+- položky v košíku, které nejsou v oblíbených, se zobrazí na konci sekce pod
+  čarou, s tlačítkem ♥ pro přidání mezi oblíbené,
+- vše (nastavení, adresa, tokeny, cache kategorií) v jediném klíči `rohliky`
+  v localStorage.
+
+### Architektura
+
+```
+index.html             kostra + <script type="module">
+styles.css
+src/index.js           bootstrap + re-render při změně storu
+src/store.js           jediný klíč localStorage + runtime data + subscription
+src/actions.js         orchestrace volání API a aktualizací storu
+src/selectors.js       seskupení oblíbených podle kategorií + „extras“ z košíku
+src/api/client.js      fetch wrapper (proxy, X-Session, chyby)
+src/api/rohlik.js      jednotlivé endpointy
+src/lib/dom.js         mini vdom (h/render), bez závislostí
+src/lib/format.js      ceny, dostupnost, formátování
+src/components/*       App, Topbar, Login, Sections, Product, CartPanel, Settings, Toasts
+proxy/rohlik-proxy.js  Cloudflare Worker (CORS + PHPSESSION ↔ X-Session)
+```
+
+### Použité endpointy
+
+- `POST /services/frontend-service/login` → nastaví `PHPSESSION`
+- `GET  /api/v1/categories/favorite/products?page=&size=50&sort=recommended`
+- `GET  /api/v1/products/card?products=&products=&categoryType=favorite`
+- `GET  /api/v1/products/{id}/categories`
+- `GET  /services/frontend-service/v2/cart`
+- `POST /services/frontend-service/v2/cart?productId=` (`cartAddItemDTO`)
+- `PUT  /services/frontend-service/v2/cart?orderFieldId=` (`cartUpdateItemDTO`)
+- `DELETE /services/frontend-service/v2/cart?orderFieldId=`
+- `POST /services/frontend-service/product/favourite` (`userFavouriteRequestDTO`)
+- `GET  /services/frontend-service/delivery-address/list`
+- `POST /services/frontend-service/delivery-zone/set` (`addressGeocodeDTO`)
+
