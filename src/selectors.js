@@ -1,6 +1,13 @@
 import { config, data } from "./store.js";
 import { availability, cardPrice } from "./lib/format.js";
 
+const IMAGE_CDN = "https://cdn.rohlik.cz";
+
+function imageUrl(path) {
+  if (!path) return "";
+  return /^https?:\/\//i.test(path) ? path : `${IMAGE_CDN}${path}`;
+}
+
 function fallbackCategoryName() {
   return "Ostatní";
 }
@@ -14,7 +21,7 @@ export function favoriteToView(card) {
   return {
     id: card.productId,
     name: card.name,
-    image: card.image && card.image.path ? card.image.path : "",
+    image: imageUrl(card.image && card.image.path),
     amount: card.textualAmount || "",
     unit: card.unit || "",
     price: cardPrice(card),
@@ -30,7 +37,7 @@ export function cartItemToView(item) {
     orderFieldId: item.orderFieldId,
     quantity: item.quantity,
     name: item.productName,
-    image: item.imgPath ? `https://www.rohlik.cz${item.imgPath}` : "",
+    image: imageUrl(item.imgPath),
     amount: item.textualAmount || "",
     unit: item.unit || "",
     price: { final: item.price, original: null, onSale: false, unit: item.originalPricePerUnit, currency: "Kč" },

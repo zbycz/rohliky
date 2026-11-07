@@ -1,18 +1,69 @@
 :root {
+  color-scheme: light;
   --bg: #ffffff;
   --surface: #f6f7f9;
+  --media-bg: #f6f7f9;
   --border: #e3e6ea;
   --text: #1c2529;
   --muted: #6b7680;
   --accent: #e30613;
+  --accent-hover: #c80511;
+  --accent-fg: #ffffff;
   --accent-soft: #fdecee;
+  --accent-border: #f7cdd2;
   --ok: #1f8a4c;
   --ok-soft: #e7f6ed;
+  --ok-border: #cdeed9;
   --warn: #b26a00;
   --warn-soft: #fff4e0;
+  --warn-border: #f3e0bd;
+  --info: #0f4f7a;
+  --info-soft: #eaf4fb;
+  --info-border: #cfe6f5;
+  --error: #8a1119;
+  --invert-bg: #1c2529;
+  --invert-fg: #ffffff;
+  --toast-bg: #1c2529;
+  --toast-fg: #ffffff;
+  --backdrop: rgba(18, 24, 30, 0.45);
+  --spinner-track: rgba(0, 0, 0, 0.2);
   --shadow: 0 1px 2px rgba(20, 30, 40, 0.06), 0 8px 24px rgba(20, 30, 40, 0.06);
   --radius: 14px;
   --radius-sm: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --bg: #16181c;
+    --surface: #1d2025;
+    --media-bg: #f3f4f6;
+    --border: #2c313a;
+    --text: #e6e8ea;
+    --muted: #9aa3ad;
+    --accent: #ff7079;
+    --accent-hover: #ff8b92;
+    --accent-fg: #1a1112;
+    --accent-soft: #3a1519;
+    --accent-border: #5d2229;
+    --ok: #59d488;
+    --ok-soft: #12301f;
+    --ok-border: #1f4a30;
+    --warn: #e6b154;
+    --warn-soft: #3a2c12;
+    --warn-border: #57431c;
+    --info: #7cc0ef;
+    --info-soft: #12283a;
+    --info-border: #1e4059;
+    --error: #ff9aa1;
+    --invert-bg: #e6e8ea;
+    --invert-fg: #16181c;
+    --toast-bg: #2c313a;
+    --toast-fg: #e6e8ea;
+    --backdrop: rgba(0, 0, 0, 0.6);
+    --spinner-track: rgba(255, 255, 255, 0.25);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.45);
+  }
 }
 
 * {
@@ -86,7 +137,7 @@ a {
   height: 28px;
   border-radius: 8px;
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-fg);
   display: grid;
   place-items: center;
   font-size: 16px;
@@ -141,11 +192,11 @@ a {
 .btn-primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--accent-fg);
 }
 
 .btn-primary:hover {
-  background: #c80511;
+  background: var(--accent-hover);
 }
 
 .btn-ghost {
@@ -184,8 +235,8 @@ a {
 }
 
 .segmented button.active {
-  background: var(--text);
-  color: #fff;
+  background: var(--invert-bg);
+  color: var(--invert-fg);
 }
 
 .main {
@@ -266,7 +317,7 @@ a {
 .product-media {
   position: relative;
   aspect-ratio: 4 / 3;
-  background: var(--surface);
+  background: var(--media-bg);
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -340,19 +391,19 @@ a {
 .badge-ok {
   color: var(--ok);
   background: var(--ok-soft);
-  border-color: #cdeed9;
+  border-color: var(--ok-border);
 }
 
 .badge-warn {
   color: var(--warn);
   background: var(--warn-soft);
-  border-color: #f3e0bd;
+  border-color: var(--warn-border);
 }
 
 .badge-sale {
   color: var(--accent);
   background: var(--accent-soft);
-  border-color: #f7cdd2;
+  border-color: var(--accent-border);
 }
 
 .badge-muted {
@@ -420,7 +471,7 @@ a {
 
 .heart.active {
   color: var(--accent);
-  border-color: #f7cdd2;
+  border-color: var(--accent-border);
   background: var(--accent-soft);
 }
 
@@ -470,7 +521,7 @@ table.products tr:last-child td {
   width: 48px;
   height: 48px;
   border-radius: 10px;
-  background: var(--surface);
+  background: var(--media-bg);
   object-fit: contain;
   flex: none;
 }
@@ -536,7 +587,7 @@ table.products tr:last-child td {
   height: 40px;
   border-radius: 8px;
   object-fit: contain;
-  background: var(--surface);
+  background: var(--media-bg);
   flex: none;
 }
 
@@ -620,21 +671,21 @@ table.products tr:last-child td {
 }
 
 .banner-error {
-  color: #8a1119;
+  color: var(--error);
   background: var(--accent-soft);
-  border-color: #f7cdd2;
+  border-color: var(--accent-border);
 }
 
 .banner-info {
-  color: #0f4f7a;
-  background: #eaf4fb;
-  border-color: #cfe6f5;
+  color: var(--info);
+  background: var(--info-soft);
+  border-color: var(--info-border);
 }
 
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(18, 24, 30, 0.45);
+  background: var(--backdrop);
   display: grid;
   place-items: center;
   padding: 20px;
@@ -687,8 +738,8 @@ table.products tr:last-child td {
 }
 
 .toast {
-  background: var(--text);
-  color: #fff;
+  background: var(--toast-bg);
+  color: var(--toast-fg);
   border-radius: var(--radius-sm);
   padding: 10px 14px;
   font-size: 14px;
@@ -702,14 +753,14 @@ table.products tr:last-child td {
 .spinner {
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  border-top-color: #fff;
+  border: 2px solid color-mix(in srgb, currentColor 35%, transparent);
+  border-top-color: currentColor;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
 
 .spinner.dark {
-  border-color: rgba(0, 0, 0, 0.2);
+  border-color: var(--spinner-track);
   border-top-color: var(--text);
 }
 
