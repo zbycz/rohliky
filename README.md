@@ -192,16 +192,40 @@ python3 rohlik_api_explore.py
 
 ## Aplikace — jak spustit
 
-1. **Proxy (nutné pro přihlášení).** Nahraj `proxy/rohlik-proxy.js` jako Cloudflare
-   Worker (Workers → Create Worker → vložit obsah → Deploy). Vznikne URL typu
-   `https://rohlik-proxy.<tvuj-ucet>.workers.dev`.
-2. **Appka.** Otevři `https://zbycz.github.io/rohliky/`, v „Nastavení“ vlož URL
-   workeru a ulož.
-3. Přihlas se e-mailem a heslem. (Alternativně lze do Nastavení vložit existující
-   `PHPSESSION` token z DevTools → Application → Cookies → rohlik.cz.)
+Appku jde hostovat dvěma způsoby (oboje zdarma). Liší se jen v tom, kde běží
+serverová část, která řeší CORS a cookies.
 
-Bez proxy se appka načte, ale přihlášení, oblíbené ani košík nebudou fungovat
-(prohlížeč kvůli CORS nemůže volat Rohlik.cz s přihlášením).
+### A) Cloudflare Pages + Pages Functions (doporučeno)
+
+Statický web i proxy běží na **stejné doméně** → žádné CORS neexistuje.
+
+1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to Git**,
+   vyber repo `zbycz/rohliky`.
+2. Build nastavení: Framework preset **None**, Build command prázdný,
+   Build output directory **`/`**.
+3. Deploy → dostaneš `https://<projekt>.pages.dev`. Adresář `functions/`
+   (`functions/rohlik/[[path]].js`) se nasadí automaticky a obsluhuje `/rohlik/*`.
+4. Otevři appku a v **Nastavení** nastav Proxy URL na
+   `https://<projekt>.pages.dev/rohlik`. Ulož a přihlas se.
+
+### B) Statický web + samostatný Cloudflare Worker
+
+Statika třeba na GitHub Pages, proxy jako separátní Worker (posílá CORS
+hlavičky, které jsou v `proxy/rohlik-proxy.js`).
+
+1. `cd proxy && npx wrangler deploy` (worker `rohlik-proxy`, konfig v
+   `proxy/wrangler.toml`). Nebo dashboard → Workers → Create → vlož obsah
+   `proxy/rohlik-proxy.js`.
+2. V **Nastavení** appky vlož URL workeru
+   (`https://rohlik-proxy.<ucet>.workers.dev`).
+
+### Společné
+
+- Přihlas se e-mailem a heslem. Alternativně lze do Nastavení vložit existující
+  `PHPSESSION` token z DevTools → Application → Cookies → rohlik.cz.
+- Bez proxy se appka načte, ale přihlášení, oblíbené ani košík nebudou fungovat
+  (prohlížeč kvůli CORS nemůže volat Rohlik.cz s přihlášením — `PHPSESSION` je
+  HttpOnly a bez `SameSite`, takže se na cross-site request nepošle).
 
 ### Co appka umí
 
@@ -229,7 +253,9 @@ src/api/rohlik.js      jednotlivé endpointy
 src/lib/dom.js         mini vdom (h/render), bez závislostí
 src/lib/format.js      ceny, dostupnost, formátování
 src/components/*       App, Topbar, Login, Sections, Product, CartPanel, Settings, Toasts
-proxy/rohlik-proxy.js  Cloudflare Worker (CORS + PHPSESSION ↔ X-Session)
+functions/rohlik/[[path]].js  Cloudflare Pages Function (same-origin proxy)
+proxy/rohlik-proxy.js  samostatný Cloudflare Worker (stejná logika, CORS)
+proxy/wrangler.toml    konfig pro `wrangler deploy` workeru
 ```
 
 ### Použité endpointy
