@@ -3,6 +3,7 @@ import { hasAccount } from "../actions.js";
 import { Topbar } from "./topbar.js";
 import { LoginView } from "./login.js";
 import { Sections } from "./sections.js";
+import { ShoppingList } from "./shopping.js";
 import { CartPanel } from "./cartPanel.js";
 import { SettingsModal } from "./settings.js";
 import { Toasts } from "./toasts.js";
@@ -14,7 +15,17 @@ export function App() {
     { class: "app-shell" },
     authed ? Topbar() : null,
     authed
-      ? h("main", { class: "main" }, h("div", { class: "content" }, Sections()), CartPanel())
+      ? h(
+          "main",
+          { class: "main" },
+          h("section", { class: "page-block" }, h("h1", { class: "page-title" }, "Nákupní seznam"), ShoppingList()),
+          h(
+            "section",
+            { class: "page-block" },
+            h("h1", { class: "page-title" }, "Oblíbené"),
+            h("div", { class: "columns" }, h("div", { class: "content" }, Sections()), CartPanel())
+          )
+        )
       : h("main", { class: "main single" }, LoginView()),
     SettingsModal(),
     Toasts()
