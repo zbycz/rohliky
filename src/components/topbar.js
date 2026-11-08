@@ -1,6 +1,6 @@
 import { h } from "../lib/dom.js";
 import { config, data, setConfig, setData } from "../store.js";
-import { logout, refresh } from "../actions.js";
+import { refresh } from "../actions.js";
 import { cartCount } from "../lib/format.js";
 
 function addressLabel() {
@@ -34,8 +34,7 @@ export function Topbar() {
         )
       ),
       h("button", { class: "btn", type: "button", onClick: () => refresh() }, "↻ Obnovit"),
-      h("button", { class: "btn", type: "button", onClick: () => setData({ settingsOpen: true }) }, "⚙️ Nastavení"),
-      h("button", { class: "btn", type: "button", onClick: () => logout() }, "Odhlásit")
+      h("button", { class: "btn", type: "button", onClick: () => setData({ settingsOpen: true }) }, "⚙️ Nastavení")
     )
   );
 }

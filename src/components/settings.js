@@ -1,9 +1,14 @@
 import { h } from "../lib/dom.js";
 import { config, data, setConfig, setData } from "../store.js";
-import { selectAddress } from "../actions.js";
+import { logout, selectAddress } from "../actions.js";
 
 function close() {
   setData({ settingsOpen: false });
+}
+
+async function handleLogout() {
+  await logout();
+  close();
 }
 
 function field(label, name, value, placeholder) {
@@ -87,6 +92,11 @@ export function SettingsModal() {
           "p",
           { class: "hint", style: { marginTop: "14px" } },
           "Session token najdeš v DevTools → Application → Cookies → rohlik.cz → PHPSESSION."
+        ),
+        h(
+          "div",
+          { class: "settings-actions" },
+          h("button", { class: "btn", type: "button", onClick: handleLogout }, "Odhlásit")
         )
       )
     )

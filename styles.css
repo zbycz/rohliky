@@ -754,6 +754,12 @@ table.products tr:last-child td {
   margin: 0 0 12px;
 }
 
+.settings-actions {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
 .toasts {
   position: fixed;
   right: 16px;
