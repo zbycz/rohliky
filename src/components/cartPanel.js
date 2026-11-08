@@ -41,6 +41,16 @@ export function CartPanel() {
       { class: "cart-total" },
       h("span", null, "Celkem"),
       h("span", null, money(cart ? cart.totalPrice : 0, "Kč"))
+    ),
+    h(
+      "a",
+      {
+        class: "btn btn-primary checkout-btn",
+        href: "https://www.rohlik.cz/objednavka/prehled-kosiku",
+        target: "_blank",
+        rel: "noreferrer",
+      },
+      "Přejít k pokladně"
     )
   );
 }

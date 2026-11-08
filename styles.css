@@ -639,6 +639,13 @@ table.products tr:last-child td {
   font-weight: 700;
 }
 
+.checkout-btn {
+  margin-top: 12px;
+  width: 100%;
+  justify-content: center;
+  text-decoration: none;
+}
+
 .muted {
   color: var(--muted);
 }
