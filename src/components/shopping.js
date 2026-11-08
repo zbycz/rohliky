@@ -174,7 +174,7 @@ export function ShoppingList() {
     "div",
     { class: "card pad todo" },
     entries.length ? h("div", { class: "todo-list" }, entries.map(TodoItem)) : null,
-    DraftRow(),
+    entries.length === 0 ? DraftRow() : null,
     Hint()
   );
 }
