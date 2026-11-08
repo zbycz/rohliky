@@ -22,8 +22,7 @@ function Table(items, withHead = true) {
               h("th", null, "Cena"),
               h("th", null, "Cena / jednotka"),
               h("th", null, "Dostupnost"),
-              h("th", null, "Množství"),
-              h("th", null, "")
+              h("th", null, "Množství")
             )
           )
         : null,
