@@ -409,7 +409,8 @@ table.products tr:last-child td {
   width: 48px;
   height: 48px;
   border-radius: 10px;
-  background: var(--media-bg);
+  background: #ffffff;
+  padding: 10px;
   object-fit: contain;
   flex: none;
 }
