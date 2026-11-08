@@ -53,10 +53,11 @@ export function QtyControl(product) {
       {
         class: "btn btn-primary add-btn",
         type: "button",
+        title: "Do košíku",
         disabled: busy || unavailable,
         onClick: () => changeQuantity({ id: product.id, quantity: 0, orderFieldId: null }, 1),
       },
-      busy ? Spinner() : "Do košíku"
+      busy ? Spinner() : "+1"
     );
   }
 
