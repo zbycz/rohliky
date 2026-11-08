@@ -2,7 +2,7 @@ import { h } from "../lib/dom.js";
 import { config, data } from "../store.js";
 import { sections } from "../selectors.js";
 import { ProductCard, ProductRow } from "./product.js";
-import { Banner, CountPill, Spinner } from "./common.js";
+import { Banner, Spinner } from "./common.js";
 
 function Grid(items) {
   return h("div", { class: "grid" }, items.map(ProductCard));
@@ -56,8 +56,7 @@ function CategorySection(group) {
     h(
       "div",
       { class: "section-head" },
-      h("h2", null, group.name),
-      group.items.length ? CountPill(`${group.items.length} oblíbených`) : CountPill("jen v košíku")
+      h("h2", null, group.name)
     ),
     group.items.length ? ProductsBlock(group.items) : null,
     group.extras.length ? ExtrasBlock(group.extras) : null
