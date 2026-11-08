@@ -73,7 +73,7 @@ export function ProductRow(product) {
         product.image ? h("img", { class: "cell-thumb", src: product.image, alt: "", loading: "lazy" }) : h("div", { class: "cell-thumb" }),
         h(
           "div",
-          null,
+          { class: "cell-info" },
           h("a", { class: "cell-name", href: product.url, target: "_blank", rel: "noreferrer" }, product.name),
           product.amount ? h("div", { class: "cell-sub" }, product.amount) : null
         )
