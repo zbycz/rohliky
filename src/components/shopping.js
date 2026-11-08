@@ -104,9 +104,9 @@ function TodoRow(item) {
 }
 
 function Goods(item) {
-  const favorites = data.favorites;
+  const assigned = new Set(list.items().flatMap((entry) => entry.products.map(String)));
+  const available = data.favorites.filter((card) => !assigned.has(String(card.productId)));
   const rows = item.products.map((id) => favoriteView(id)).filter(Boolean);
-  const available = favorites.filter((card) => !item.products.includes(String(card.productId)));
   return h(
     "div",
     { class: "goods" },
@@ -127,7 +127,7 @@ function Goods(item) {
       : h(
           "p",
           { class: "goods-empty" },
-          favorites.length ? "Všechny oblíbené už jsou přiřazené." : "Nejdřív je potřeba načíst oblíbené."
+          data.favorites.length ? "Všechny oblíbené už jsou přiřazené." : "Nejdřív je potřeba načíst oblíbené."
         )
   );
 }
