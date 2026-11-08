@@ -96,6 +96,11 @@ export function SettingsModal() {
         h(
           "div",
           { class: "settings-actions" },
+          h(
+            "a",
+            { href: "https://github.com/zbycz/rohliky", target: "_blank", rel: "noreferrer" },
+            "Zdrojový kód na GitHubu"
+          ),
           h("button", { class: "btn", type: "button", onClick: handleLogout }, "Odhlásit")
         )
       )

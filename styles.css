@@ -755,6 +755,10 @@ table.products tr:last-child td {
 }
 
 .settings-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin-top: 18px;
   padding-top: 16px;
   border-top: 1px solid var(--border);
