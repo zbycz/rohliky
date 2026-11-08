@@ -5,7 +5,7 @@ function defaults() {
     version: 1,
     session: "",
     view: "grid",
-    address: { query: "Ke Džbánu 8, Praha 6", currentId: null },
+    address: { currentId: null },
     auth: { email: "", remember: false, password: "", userId: null, name: "" },
     categories: {},
   };

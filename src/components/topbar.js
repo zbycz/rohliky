@@ -6,7 +6,7 @@ import { cartCount } from "../lib/format.js";
 function addressLabel() {
   const entry = data.addresses.find((candidate) => candidate.address && candidate.address.id === config.address.currentId);
   if (entry && entry.address && entry.address.fullAddress) return entry.address.fullAddress;
-  return config.address.query;
+  return "";
 }
 
 export function Topbar() {
