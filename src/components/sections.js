@@ -4,7 +4,7 @@ import { sections } from "../selectors.js";
 import { ProductRow } from "./product.js";
 import { Banner, Spinner } from "./common.js";
 
-export function ProductsTable(items, withHead = true) {
+export function ProductsTable(items, withHead = true, action = null) {
   return h(
     "div",
     { class: "table-wrap" },
@@ -22,11 +22,12 @@ export function ProductsTable(items, withHead = true) {
               h("th", null, "Cena"),
               h("th", null, "Cena / jednotka"),
               h("th", null, "Dostupnost"),
-              h("th", null, "Množství")
+              h("th", null, "Množství"),
+              action ? h("th", { class: "row-action" }) : null
             )
           )
         : null,
-      h("tbody", null, items.map(ProductRow))
+      h("tbody", null, items.map((item) => ProductRow(item, action)))
     )
   );
 }

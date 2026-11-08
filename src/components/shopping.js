@@ -103,8 +103,21 @@ function TodoRow(item) {
   );
 }
 
+function RemoveButton(item, product) {
+  return h(
+    "button",
+    {
+      class: "goods-remove",
+      type: "button",
+      title: "Odebrat z této položky",
+      onClick: () => list.removeProduct(item.id, product.id),
+    },
+    "✕"
+  );
+}
+
 function Goods(item) {
-  const assigned = new Set(list.items().flatMap((entry) => entry.products.map(String)));
+  const assigned = list.assignedIds();
   const groups = favoriteGroups()
     .map((group) => ({ name: group.name, items: group.items.filter((product) => !assigned.has(String(product.id))) }))
     .filter((group) => group.items.length > 0);
@@ -112,7 +125,7 @@ function Goods(item) {
   return h(
     "div",
     { class: "goods" },
-    ProductsTable(rows),
+    ProductsTable(rows, true, (product) => RemoveButton(item, product)),
     groups.length
       ? h(
           "select",

@@ -69,3 +69,16 @@ export function addProduct(id, productId) {
     ),
   });
 }
+
+export function removeProduct(id, productId) {
+  const key = String(productId);
+  setConfig({
+    shopping: items().map((item) =>
+      item.id === id ? { ...item, products: item.products.filter((product) => product !== key) } : item
+    ),
+  });
+}
+
+export function assignedIds() {
+  return new Set(items().flatMap((item) => item.products.map(String)));
+}

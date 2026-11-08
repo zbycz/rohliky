@@ -60,7 +60,7 @@ export function QtyControl(product) {
   );
 }
 
-export function ProductRow(product) {
+export function ProductRow(product, action) {
   return h(
     "tr",
     null,
@@ -82,6 +82,7 @@ export function ProductRow(product) {
     h("td", { class: "num" }, money(product.price.final, product.price.currency)),
     h("td", { class: "num" }, product.price.unit != null ? unitPrice(product.price.unit, product.unit) : "—"),
     h("td", null, AvailabilityBadge(product)),
-    h("td", null, QtyControl(product))
+    h("td", null, QtyControl(product)),
+    action ? h("td", { class: "row-action" }, action(product)) : null
   );
 }

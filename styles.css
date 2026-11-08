@@ -787,6 +787,30 @@ table.products tr:last-child td {
   color: var(--muted);
 }
 
+table.products th.row-action,
+table.products td.row-action {
+  width: 44px;
+  padding-left: 4px;
+  padding-right: 4px;
+  text-align: center;
+}
+
+.goods-remove {
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1;
+}
+
+.goods-remove:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
 .todo-hint {
   margin: 14px 0 0;
   padding-top: 10px;
