@@ -19,13 +19,20 @@ export function indexOf(id) {
   return items().findIndex((item) => item.id === id);
 }
 
-export function add(index, text = "") {
+export function newItem(text = "") {
+  return { id: newId(), text, done: false, open: false, products: [] };
+}
+
+export function insert(index, item) {
   const list = [...items()];
   const at = Math.max(0, Math.min(index, list.length));
-  const item = { id: newId(), text, done: false, open: false, products: [] };
   list.splice(at, 0, item);
   setConfig({ shopping: list });
   return item;
+}
+
+export function add(index, text = "") {
+  return insert(index, newItem(text));
 }
 
 export function setText(id, text) {

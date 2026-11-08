@@ -20,6 +20,14 @@ function moveFocus(id, delta) {
   if (next) focusByKey(next.id);
 }
 
+// The store change re-renders synchronously, so the focus request has to be
+// registered before the item is inserted.
+function createItemAt(index, text) {
+  const item = list.newItem(text);
+  requestFocus(item.id);
+  return list.insert(index, item);
+}
+
 function onDraftInput(event) {
   draft = event.target.value;
 }
@@ -30,7 +38,7 @@ function onDraftKeyDown(event) {
     const text = draft.trim();
     if (!text) return;
     draft = "";
-    list.add(list.items().length, text);
+    createItemAt(list.items().length, text);
   } else if (event.key === "ArrowUp") {
     event.preventDefault();
     const last = list.items().slice(-1)[0];
@@ -41,8 +49,7 @@ function onDraftKeyDown(event) {
 function onItemKeyDown(event, item) {
   if (event.key === "Enter") {
     event.preventDefault();
-    const created = list.add(list.indexOf(item.id) + 1);
-    requestFocus(created.id);
+    createItemAt(list.indexOf(item.id) + 1, "");
   } else if (event.key === "ArrowDown") {
     event.preventDefault();
     if (event.shiftKey) list.move(item.id, 1);
@@ -54,8 +61,8 @@ function onItemKeyDown(event, item) {
   } else if (event.key === "Backspace" && item.text === "") {
     event.preventDefault();
     const previous = list.items()[list.indexOf(item.id) - 1];
+    requestFocus(previous ? previous.id : DRAFT_KEY);
     list.remove(item.id);
-    if (previous) requestFocus(previous.id);
   }
 }
 
