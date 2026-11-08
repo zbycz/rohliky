@@ -4,7 +4,6 @@ function defaults() {
   return {
     version: 1,
     session: "",
-    view: "grid",
     address: { currentId: null },
     auth: { email: "", remember: false, password: "", userId: null, name: "" },
     categories: {},

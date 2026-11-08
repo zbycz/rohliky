@@ -1,5 +1,5 @@
 import { h } from "../lib/dom.js";
-import { config, data, setConfig, setData } from "../store.js";
+import { config, data, setData } from "../store.js";
 import { refresh } from "../actions.js";
 import { cartCount } from "../lib/format.js";
 
@@ -19,20 +19,6 @@ export function Topbar() {
       h("div", { class: "brand" }, h("span", { class: "brand-mark" }, "🛒"), "Rohlík oblíbené"),
       h("div", { class: "topbar-spacer" }),
       h("div", { class: "address-chip", title: addressLabel() }, "📍", h("strong", null, addressLabel())),
-      h(
-        "div",
-        { class: "segmented", role: "group" },
-        h(
-          "button",
-          { type: "button", class: config.view === "grid" ? "active" : "", onClick: () => setConfig({ view: "grid" }) },
-          "Mřížka"
-        ),
-        h(
-          "button",
-          { type: "button", class: config.view === "table" ? "active" : "", onClick: () => setConfig({ view: "table" }) },
-          "Tabulka"
-        )
-      ),
       h("button", { class: "btn", type: "button", onClick: () => refresh() }, "↻ Obnovit"),
       h("button", { class: "btn", type: "button", onClick: () => setData({ settingsOpen: true }) }, "⚙️ Nastavení")
     )

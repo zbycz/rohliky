@@ -1,12 +1,8 @@
 import { h } from "../lib/dom.js";
-import { config, data } from "../store.js";
+import { data } from "../store.js";
 import { sections } from "../selectors.js";
-import { ProductCard, ProductRow } from "./product.js";
+import { ProductRow } from "./product.js";
 import { Banner, Spinner } from "./common.js";
-
-function Grid(items) {
-  return h("div", { class: "grid" }, items.map(ProductCard));
-}
 
 function Table(items, withHead = true) {
   return h(
@@ -37,7 +33,7 @@ function Table(items, withHead = true) {
 }
 
 function ProductsBlock(items) {
-  return config.view === "table" ? Table(items) : Grid(items);
+  return Table(items);
 }
 
 function ExtrasBlock(extras) {
@@ -45,7 +41,7 @@ function ExtrasBlock(extras) {
     "div",
     { class: "extras" },
     h("div", { class: "extras-head" }, `Není v oblíbených, ale je v košíku (${extras.length})`),
-    config.view === "table" ? Table(extras, false) : Grid(extras)
+    Table(extras, false)
   );
 }
 
