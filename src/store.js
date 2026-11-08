@@ -8,6 +8,7 @@ function defaults() {
     address: { currentId: null },
     auth: { email: "", remember: false, password: "", userId: null, name: "" },
     categories: {},
+    shopping: [],
   };
 }
 

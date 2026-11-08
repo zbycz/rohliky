@@ -1,0 +1,51 @@
+import { config, setConfig } from "./store.js";
+
+let seq = 0;
+
+function newId() {
+  seq += 1;
+  return `s${Date.now().toString(36)}-${seq}`;
+}
+
+export function items() {
+  return config.shopping || [];
+}
+
+function itemsExcept(id) {
+  return items().filter((item) => item.id !== id);
+}
+
+export function indexOf(id) {
+  return items().findIndex((item) => item.id === id);
+}
+
+export function add(index, text = "") {
+  const list = [...items()];
+  const at = Math.max(0, Math.min(index, list.length));
+  const item = { id: newId(), text, done: false, open: false, products: [] };
+  list.splice(at, 0, item);
+  setConfig({ shopping: list });
+  return item;
+}
+
+export function setText(id, text) {
+  setConfig({ shopping: items().map((item) => (item.id === id ? { ...item, text } : item)) });
+}
+
+export function toggle(id) {
+  setConfig({ shopping: items().map((item) => (item.id === id ? { ...item, done: !item.done } : item)) });
+}
+
+export function remove(id) {
+  setConfig({ shopping: itemsExcept(id) });
+}
+
+export function move(id, delta) {
+  const list = [...items()];
+  const from = list.findIndex((item) => item.id === id);
+  const to = from + delta;
+  if (from < 0 || to < 0 || to >= list.length) return;
+  const [item] = list.splice(from, 1);
+  list.splice(to, 0, item);
+  setConfig({ shopping: list });
+}
