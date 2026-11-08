@@ -747,3 +747,28 @@ table.products tr:last-child td {
     position: static;
   }
 }
+
+@media (max-width: 640px) {
+  .topbar {
+    position: static;
+  }
+  .topbar-inner {
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  .address-chip,
+  .brand-name {
+    display: none;
+  }
+  .brand {
+    flex: none;
+  }
+  .btn {
+    padding: 7px 10px;
+    font-size: 13px;
+  }
+  .refresh-btn {
+    min-width: 0;
+  }
+}
