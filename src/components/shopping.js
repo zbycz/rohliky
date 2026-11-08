@@ -60,8 +60,11 @@ function onItemKeyDown(event, item) {
     else moveFocus(item.id, -1);
   } else if (event.key === "Backspace" && item.text === "") {
     event.preventDefault();
-    const previous = list.items()[list.indexOf(item.id) - 1];
-    requestFocus(previous ? previous.id : DRAFT_KEY);
+    const entries = list.items();
+    const index = list.indexOf(item.id);
+    const previous = entries[index - 1];
+    const next = entries[index + 1];
+    requestFocus(previous ? previous.id : next ? next.id : DRAFT_KEY);
     list.remove(item.id);
   }
 }
