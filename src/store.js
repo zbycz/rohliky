@@ -4,6 +4,7 @@ function defaults() {
   return {
     version: 1,
     session: "",
+    roundPrices: false,
     address: { currentId: null },
     auth: { email: "", remember: false, password: "", userId: null, name: "" },
     categories: {},

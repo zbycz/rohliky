@@ -20,6 +20,15 @@ function field(label, name, value, placeholder) {
   );
 }
 
+function checkbox(label, name, checked, onChange) {
+  return h(
+    "label",
+    { class: "checkbox" },
+    h("input", { type: "checkbox", name, checked: checked ? true : null, onChange }),
+    label
+  );
+}
+
 function onAddressChange(event) {
   const entry = data.addresses.find((candidate) => candidate.address && candidate.address.id === Number(event.target.value));
   if (entry && entry.address) selectAddress(entry.address);
@@ -78,6 +87,9 @@ export function SettingsModal() {
           { onSubmit: onSave },
           field("Session token (PHPSESSION)", "session", config.session, "nepovinné, raději se přihlas formulářem"),
           data.addresses.length ? h("div", { class: "field" }, h("label", null, "Aktivní uložená adresa"), addressSelect()) : null,
+          checkbox("Zaokrouhlovat ceny na 5", "roundPrices", config.roundPrices, (event) =>
+            setConfig({ roundPrices: event.target.checked })
+          ),
           h(
             "button",
             { class: "btn btn-primary", type: "submit", style: { width: "100%", justifyContent: "center" } },

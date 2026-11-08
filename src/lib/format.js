@@ -1,6 +1,15 @@
+import { config } from "../store.js";
+
+function roundToFive(value) {
+  const number = Number(value);
+  if (number <= 5) return number;
+  return Math.round(number / 5) * 5;
+}
+
 export function money(value, currency = "Kč") {
   if (value == null || Number.isNaN(Number(value))) return "";
-  return `${Math.round(Number(value)).toLocaleString("cs-CZ")} ${currency}`;
+  const amount = config.roundPrices ? roundToFive(value) : Number(value);
+  return `${Math.round(amount).toLocaleString("cs-CZ")} ${currency}`;
 }
 
 export function unitPrice(price, unit) {
