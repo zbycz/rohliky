@@ -72,6 +72,16 @@ export function favoriteView(productId) {
   return card ? favoriteToView(card) : null;
 }
 
+export function favoriteGroups() {
+  const grouped = new Map();
+  for (const card of data.favorites) {
+    const name = categoryNameFor(card.productId);
+    if (!grouped.has(name)) grouped.set(name, []);
+    grouped.get(name).push(favoriteToView(card));
+  }
+  return Array.from(grouped, ([name, items]) => ({ name, items })).sort((a, b) => a.name.localeCompare(b.name, "cs"));
+}
+
 export function sections() {
   const favorites = data.favorites.map(favoriteToView);
   const inCart = cartItems();

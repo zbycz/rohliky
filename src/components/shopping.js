@@ -1,7 +1,7 @@
 import { h } from "../lib/dom.js";
 import { data } from "../store.js";
 import * as list from "../shopping.js";
-import { favoriteView } from "../selectors.js";
+import { favoriteGroups, favoriteView } from "../selectors.js";
 import { requestFocus } from "../lib/focus.js";
 import { ProductsTable } from "./sections.js";
 
@@ -105,13 +105,15 @@ function TodoRow(item) {
 
 function Goods(item) {
   const assigned = new Set(list.items().flatMap((entry) => entry.products.map(String)));
-  const available = data.favorites.filter((card) => !assigned.has(String(card.productId)));
+  const groups = favoriteGroups()
+    .map((group) => ({ name: group.name, items: group.items.filter((product) => !assigned.has(String(product.id))) }))
+    .filter((group) => group.items.length > 0);
   const rows = item.products.map((id) => favoriteView(id)).filter(Boolean);
   return h(
     "div",
     { class: "goods" },
     ProductsTable(rows),
-    available.length
+    groups.length
       ? h(
           "select",
           {
@@ -122,7 +124,13 @@ function Goods(item) {
             },
           },
           h("option", { value: "" }, "+ přidat"),
-          available.map((card) => h("option", { value: String(card.productId) }, card.name))
+          groups.map((group) =>
+            h(
+              "optgroup",
+              { label: group.name },
+              group.items.map((product) => h("option", { value: String(product.id) }, product.name))
+            )
+          )
         )
       : h(
           "p",
