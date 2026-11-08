@@ -49,3 +49,16 @@ export function move(id, delta) {
   list.splice(to, 0, item);
   setConfig({ shopping: list });
 }
+
+export function toggleOpen(id) {
+  setConfig({ shopping: items().map((item) => (item.id === id ? { ...item, open: !item.open } : item)) });
+}
+
+export function addProduct(id, productId) {
+  const key = String(productId);
+  setConfig({
+    shopping: items().map((item) =>
+      item.id === id && !item.products.includes(key) ? { ...item, products: [...item.products, key] } : item
+    ),
+  });
+}

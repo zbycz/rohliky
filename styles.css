@@ -701,6 +701,16 @@ table.products tr:last-child td {
   flex-direction: column;
 }
 
+.todo-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.todo-item + .todo-item {
+  margin-top: 4px;
+}
+
 .todo-row {
   display: flex;
   align-items: center;
@@ -744,6 +754,43 @@ table.products tr:last-child td {
 .todo-row.done .todo-input {
   color: var(--muted);
   text-decoration: line-through;
+}
+
+.todo-expand {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.todo-expand:hover {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.goods {
+  margin: 0 0 6px 32px;
+}
+
+.goods-select {
+  margin-top: 10px;
+  max-width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  padding: 6px 10px;
+}
+
+.goods-empty {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--muted);
 }
 
 .todo-hint {

@@ -1,6 +1,9 @@
 import { h } from "../lib/dom.js";
+import { data } from "../store.js";
 import * as list from "../shopping.js";
+import { favoriteView } from "../selectors.js";
 import { requestFocus } from "../lib/focus.js";
+import { ProductsTable } from "./sections.js";
 
 const DRAFT_KEY = "new";
 
@@ -75,7 +78,56 @@ function TodoRow(item) {
       autocomplete: "off",
       onInput: (event) => list.setText(item.id, event.target.value),
       onKeyDown: (event) => onItemKeyDown(event, item),
-    })
+    }),
+    h(
+      "button",
+      {
+        class: "todo-expand",
+        type: "button",
+        title: item.open ? "Sbalit zboží" : "Rozbalit zboží",
+        "data-focus-key": `expand-${item.id}`,
+        onClick: () => list.toggleOpen(item.id),
+      },
+      item.open ? "▴" : "▸"
+    )
+  );
+}
+
+function Goods(item) {
+  const favorites = data.favorites;
+  const rows = item.products.map((id) => favoriteView(id)).filter(Boolean);
+  const available = favorites.filter((card) => !item.products.includes(String(card.productId)));
+  return h(
+    "div",
+    { class: "goods" },
+    ProductsTable(rows),
+    available.length
+      ? h(
+          "select",
+          {
+            class: "goods-select",
+            title: "Přiřadit zboží z oblíbených",
+            onChange: (event) => {
+              if (event.target.value) list.addProduct(item.id, event.target.value);
+            },
+          },
+          h("option", { value: "" }, "+ přidat"),
+          available.map((card) => h("option", { value: String(card.productId) }, card.name))
+        )
+      : h(
+          "p",
+          { class: "goods-empty" },
+          favorites.length ? "Všechny oblíbené už jsou přiřazené." : "Nejdřív je potřeba načíst oblíbené."
+        )
+  );
+}
+
+function TodoItem(item) {
+  return h(
+    "div",
+    { class: `todo-item${item.open ? " open" : ""}` },
+    TodoRow(item),
+    item.open ? Goods(item) : null
   );
 }
 
@@ -121,7 +173,7 @@ export function ShoppingList() {
   return h(
     "div",
     { class: "card pad todo" },
-    entries.length ? h("div", { class: "todo-list" }, entries.map(TodoRow)) : null,
+    entries.length ? h("div", { class: "todo-list" }, entries.map(TodoItem)) : null,
     DraftRow(),
     Hint()
   );

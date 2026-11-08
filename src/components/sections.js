@@ -4,7 +4,7 @@ import { sections } from "../selectors.js";
 import { ProductRow } from "./product.js";
 import { Banner, Spinner } from "./common.js";
 
-function Table(items, withHead = true) {
+export function ProductsTable(items, withHead = true) {
   return h(
     "div",
     { class: "table-wrap" },
@@ -32,7 +32,7 @@ function Table(items, withHead = true) {
 }
 
 function ProductsBlock(items) {
-  return Table(items);
+  return ProductsTable(items);
 }
 
 function ExtrasBlock(extras) {
@@ -40,7 +40,7 @@ function ExtrasBlock(extras) {
     "div",
     { class: "extras" },
     h("div", { class: "extras-head" }, `Není v oblíbených, ale je v košíku (${extras.length})`),
-    Table(extras, false)
+    ProductsTable(extras, false)
   );
 }
 

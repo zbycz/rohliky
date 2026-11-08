@@ -67,6 +67,11 @@ export function favoriteIds() {
   return new Set(data.favorites.map((card) => card.productId));
 }
 
+export function favoriteView(productId) {
+  const card = data.favorites.find((favorite) => String(favorite.productId) === String(productId));
+  return card ? favoriteToView(card) : null;
+}
+
 export function sections() {
   const favorites = data.favorites.map(favoriteToView);
   const inCart = cartItems();
