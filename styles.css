@@ -195,6 +195,18 @@ a {
   background: var(--accent-hover);
 }
 
+.refresh-btn {
+  min-width: 124px;
+  justify-content: center;
+}
+
+.btn-success,
+.btn-success:hover {
+  background: var(--ok-soft);
+  border-color: var(--ok-border);
+  color: var(--ok);
+}
+
 .btn-ghost {
   border-color: transparent;
   background: transparent;
