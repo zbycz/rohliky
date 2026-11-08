@@ -52,7 +52,7 @@ function ExtrasBlock(extras) {
 function CategorySection(group) {
   return h(
     "section",
-    { class: "card pad" },
+    { class: "category" },
     h(
       "div",
       { class: "section-head" },

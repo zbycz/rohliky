@@ -249,6 +249,8 @@ a {
   grid-template-columns: minmax(0, 1fr) 320px;
   gap: 20px;
   align-items: start;
+  background: var(--bg);
+  border-radius: var(--radius);
 }
 
 .main.single {
