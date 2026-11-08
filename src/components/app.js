@@ -18,13 +18,17 @@ export function App() {
       ? h(
           "main",
           { class: "main" },
-          h("section", { class: "page-block" }, h("h1", { class: "page-title" }, "Nákupní seznam"), ShoppingList()),
           h(
-            "section",
-            { class: "page-block" },
-            h("h1", { class: "page-title" }, "Oblíbené"),
-            h("div", { class: "columns" }, h("div", { class: "content" }, Sections()), CartPanel())
-          )
+            "div",
+            { class: "content" },
+            h(
+              "div",
+              { class: "stack" },
+              h("section", null, h("h1", { class: "page-title" }, "Nákupní seznam"), ShoppingList()),
+              h("section", null, h("h1", { class: "page-title" }, "Oblíbené"), Sections())
+            )
+          ),
+          CartPanel()
         )
       : h("main", { class: "main single" }, LoginView()),
     SettingsModal(),

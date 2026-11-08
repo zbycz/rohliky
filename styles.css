@@ -228,9 +228,10 @@ a {
   max-width: 1280px;
   margin: 0 auto;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 20px;
+  align-items: start;
   background: var(--bg);
   border-radius: var(--radius);
 }
@@ -244,13 +245,6 @@ a {
   line-height: 1.2;
   margin: 0 0 14px;
   letter-spacing: -0.02em;
-}
-
-.columns {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 20px;
-  align-items: start;
 }
 
 .content {
@@ -873,7 +867,7 @@ table.products tr:last-child td {
 }
 
 @media (max-width: 900px) {
-  .columns {
+  .main {
     grid-template-columns: minmax(0, 1fr);
   }
   .side {
