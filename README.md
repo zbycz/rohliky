@@ -218,6 +218,10 @@ Bez přihlášení appka nic nezobrazí (oblíbené i košík vyžadují session
 
 ### Co appka umí
 
+- **nákupní seznam** (todo) nahoře: položky s libovolným textem a zaškrtávátkem,
+  ovládané klávesnicí (Enter přidá pod aktuální, ↑/↓ pohyb mezi položkami,
+  Shift+↑/↓ přesun, Backspace smaže prázdnou položku) a s rozbalitelnou tabulkou
+  zboží z oblíbených u každé položky,
 - oblíbené položky seskupené podle kategorií (kategorie se dotahují po produktech
   a kešují se),
 - přepínač **mřížka / tabulka**,
@@ -237,11 +241,13 @@ src/index.js           bootstrap + re-render při změně storu
 src/store.js           jediný klíč localStorage + runtime data + subscription
 src/actions.js         orchestrace volání API a aktualizací storu
 src/selectors.js       seskupení oblíbených podle kategorií + „extras“ z košíku
+src/shopping.js        model nákupního seznamu (položky + přiřazené zboží)
 src/api/client.js      fetch wrapper (proxy, X-Session, chyby)
 src/api/rohlik.js      jednotlivé endpointy
 src/lib/dom.js         mini vdom (h/render), bez závislostí
 src/lib/format.js      ceny, dostupnost, formátování
-src/components/*       App, Topbar, Login, Sections, Product, CartPanel, Settings, Toasts
+src/lib/focus.js       obnova fokusu/karetu po re-renderu
+src/components/*       App, Topbar, Login, Sections, Shopping, Product, CartPanel, Settings, Toasts
 functions/rohlik/[[path]].js  Cloudflare Pages Function (same-origin proxy)
 proxy/rohlik-proxy.js  samostatný Cloudflare Worker (stejná logika, CORS)
 proxy/wrangler.toml    konfig pro `wrangler deploy` workeru
