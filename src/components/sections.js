@@ -1,5 +1,5 @@
 import { h } from "../lib/dom.js";
-import { data } from "../store.js";
+import { data, setData } from "../store.js";
 import { sections } from "../selectors.js";
 import { ProductRow } from "./product.js";
 import { Banner, Spinner } from "./common.js";
@@ -59,7 +59,22 @@ function CategorySection(group) {
   );
 }
 
-export function Sections() {
+function FilterToggle() {
+  const current = data.favoritesFilter || "all";
+  const option = (value, label) =>
+    h(
+      "button",
+      {
+        class: `filter-btn${current === value ? " active" : ""}`,
+        type: "button",
+        onClick: () => setData({ favoritesFilter: value }),
+      },
+      label
+    );
+  return h("div", { class: "filter-switch" }, option("all", "Všechny"), option("remaining", "Zbylé"));
+}
+
+function SectionsContent() {
   const groups = sections();
   if (data.loadingFavorites && data.favorites.length === 0) {
     return h("div", { class: "card loading-block" }, Spinner(true), "Načítám oblíbené…");
@@ -68,7 +83,15 @@ export function Sections() {
     return h("div", { class: "card pad" }, Banner("error", data.error));
   }
   if (groups.length === 0) {
-    return h("div", { class: "card pad empty" }, "Zatím tu nejsou žádné oblíbené položky ani položky v košíku.");
+    const message =
+      data.favoritesFilter === "remaining" && data.favorites.length > 0
+        ? "Všechny oblíbené už jsou přiřazené v nákupním seznamu."
+        : "Zatím tu nejsou žádné oblíbené položky ani položky v košíku.";
+    return h("div", { class: "card pad empty" }, message);
   }
   return h("div", { class: "stack" }, groups.map(CategorySection));
+}
+
+export function Sections() {
+  return h("div", { class: "stack" }, FilterToggle(), SectionsContent());
 }

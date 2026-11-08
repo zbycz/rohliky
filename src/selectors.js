@@ -1,4 +1,5 @@
 import { config, data } from "./store.js";
+import { assignedIds } from "./shopping.js";
 import { availability, cardPrice } from "./lib/format.js";
 
 const IMAGE_CDN = "https://cdn.rohlik.cz";
@@ -83,7 +84,11 @@ export function favoriteGroups() {
 }
 
 export function sections() {
-  const favorites = data.favorites.map(favoriteToView);
+  const remainingOnly = data.favoritesFilter === "remaining";
+  const assigned = assignedIds();
+  const favorites = data.favorites
+    .filter((card) => !remainingOnly || !assigned.has(String(card.productId)))
+    .map(favoriteToView);
   const inCart = cartItems();
   const favoriteSet = favoriteIds();
   const grouped = new Map();
@@ -97,6 +102,7 @@ export function sections() {
   const leftovers = [];
   for (const item of inCart) {
     if (favoriteSet.has(item.id)) continue;
+    if (remainingOnly && assigned.has(String(item.id))) continue;
     const name = item.categoryName || categoryNameFor(item.id);
     if (grouped.has(name)) {
       grouped.get(name).extras.push(item);
