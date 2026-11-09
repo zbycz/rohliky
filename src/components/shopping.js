@@ -1,7 +1,7 @@
 import { h } from "../lib/dom.js";
 import { data } from "../store.js";
 import * as list from "../shopping.js";
-import { favoriteGroups, favoriteView } from "../selectors.js";
+import { favoriteGroups, favoriteView, productView } from "../selectors.js";
 import { requestFocus } from "../lib/focus.js";
 import { ProductsTable } from "./sections.js";
 
@@ -90,6 +90,18 @@ function onRowClick(event, item) {
   list.toggleOpen(item.id);
 }
 
+function Thumbs(item) {
+  const products = item.products.map(productView).filter((product) => product && product.image);
+  if (!products.length) return null;
+  return h(
+    "div",
+    { class: "todo-thumbs", title: "Zboží u položky" },
+    products.map((product) =>
+      h("img", { class: "todo-thumb", src: product.image, alt: "", title: product.name, loading: "lazy" })
+    )
+  );
+}
+
 function TodoRow(item) {
   return h(
     "div",
@@ -112,6 +124,7 @@ function TodoRow(item) {
       onKeyDown: (event) => onItemKeyDown(event, item),
     }),
     h("div", { class: "todo-fill" }),
+    Thumbs(item),
     h(
       "button",
       {

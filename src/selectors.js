@@ -73,6 +73,13 @@ export function favoriteView(productId) {
   return card ? favoriteToView(card) : null;
 }
 
+export function productView(productId) {
+  const favorite = favoriteView(productId);
+  if (favorite) return favorite;
+  const item = data.cart && data.cart.items ? data.cart.items[String(productId)] : null;
+  return item ? cartItemToView(item) : null;
+}
+
 export function favoriteGroups() {
   const grouped = new Map();
   for (const card of data.favorites) {

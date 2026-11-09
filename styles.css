@@ -748,6 +748,22 @@ table.products tr:last-child td {
   cursor: default;
 }
 
+.todo-thumbs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+}
+
+.todo-thumb {
+  width: 26px;
+  height: 26px;
+  padding: 2px;
+  border-radius: 7px;
+  background: #ffffff;
+  object-fit: contain;
+}
+
 .todo-check {
   flex: none;
   width: 16px;
