@@ -69,10 +69,31 @@ function onItemKeyDown(event, item) {
   }
 }
 
+let measurer = null;
+
+// Only the text itself is editable; the rest of the row toggles the goods panel,
+// so the input has to shrink to its content instead of stretching across the row.
+function measureTextWidth(text) {
+  if (!measurer) {
+    measurer = document.createElement("span");
+    measurer.className = "todo-input";
+    measurer.style.cssText =
+      "position:absolute; left:-9999px; top:-9999px; visibility:hidden; white-space:pre; pointer-events:none;";
+    document.body.appendChild(measurer);
+  }
+  measurer.textContent = text || " ";
+  return measurer.getBoundingClientRect().width;
+}
+
+function onRowClick(event, item) {
+  if (event.target.closest("input") || event.target.closest("button")) return;
+  list.toggleOpen(item.id);
+}
+
 function TodoRow(item) {
   return h(
     "div",
-    { class: `todo-row${item.done ? " done" : ""}` },
+    { class: `todo-row${item.done ? " done" : ""}`, onClick: (event) => onRowClick(event, item) },
     h("input", {
       class: "todo-check",
       type: "checkbox",
@@ -81,14 +102,16 @@ function TodoRow(item) {
       onChange: () => list.toggle(item.id),
     }),
     h("input", {
-      class: "todo-input",
+      class: "todo-input auto",
       type: "text",
       value: item.text,
       "data-focus-key": item.id,
       autocomplete: "off",
+      style: { width: `${Math.ceil(measureTextWidth(item.text))}px` },
       onInput: (event) => list.setText(item.id, event.target.value),
       onKeyDown: (event) => onItemKeyDown(event, item),
     }),
+    h("div", { class: "todo-fill" }),
     h(
       "button",
       {

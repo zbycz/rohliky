@@ -735,6 +735,17 @@ table.products tr:last-child td {
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
+}
+
+.todo-fill {
+  flex: 1;
+  align-self: stretch;
+  min-width: 0;
+}
+
+.todo-row.draft {
+  cursor: default;
 }
 
 .todo-check {
@@ -761,6 +772,12 @@ table.products tr:last-child td {
   padding: 7px 8px;
   border-radius: var(--radius-sm);
   outline: none;
+  cursor: text;
+}
+
+.todo-input.auto {
+  flex: none;
+  max-width: 100%;
 }
 
 .todo-input:focus {
