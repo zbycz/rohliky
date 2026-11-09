@@ -1,7 +1,7 @@
 import { h } from "../lib/dom.js";
 import { data } from "../store.js";
 import * as list from "../shopping.js";
-import { favoriteGroups, favoriteView, productView } from "../selectors.js";
+import { favoriteGroups, favoriteView, cartItemView } from "../selectors.js";
 import { requestFocus } from "../lib/focus.js";
 import { ProductsTable } from "./sections.js";
 
@@ -91,13 +91,18 @@ function onRowClick(event, item) {
 }
 
 function Thumbs(item) {
-  const products = item.products.map(productView).filter((product) => product && product.image);
-  if (!products.length) return null;
+  const inCart = item.products.map(cartItemView).filter((product) => product && product.image);
+  if (!inCart.length) return null;
   return h(
     "div",
-    { class: "todo-thumbs", title: "Zboží u položky" },
-    products.map((product) =>
-      h("img", { class: "todo-thumb", src: product.image, alt: "", title: product.name, loading: "lazy" })
+    { class: "todo-thumbs", title: "Zboží v košíku" },
+    inCart.map((product) =>
+      h(
+        "span",
+        { class: "todo-thumb-item" },
+        product.quantity > 1 ? h("span", { class: "todo-thumb-qty" }, String(product.quantity)) : null,
+        h("img", { class: "todo-thumb", src: product.image, alt: "", title: product.name, loading: "lazy" })
+      )
     )
   );
 }

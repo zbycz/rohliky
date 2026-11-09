@@ -73,9 +73,7 @@ export function favoriteView(productId) {
   return card ? favoriteToView(card) : null;
 }
 
-export function productView(productId) {
-  const favorite = favoriteView(productId);
-  if (favorite) return favorite;
+export function cartItemView(productId) {
   const item = data.cart && data.cart.items ? data.cart.items[String(productId)] : null;
   return item ? cartItemToView(item) : null;
 }

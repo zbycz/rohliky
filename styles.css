@@ -751,8 +751,21 @@ table.products tr:last-child td {
 .todo-thumbs {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   flex: none;
+}
+
+.todo-thumb-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.todo-thumb-qty {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
 
 .todo-thumb {
