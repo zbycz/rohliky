@@ -806,7 +806,6 @@ table.products tr:last-child td {
 
 .todo-row.done .todo-input {
   color: var(--muted);
-  text-decoration: line-through;
 }
 
 .todo-expand {
