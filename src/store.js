@@ -52,7 +52,7 @@ export const data = {
   busy: {},
   cartOpen: false,
   settingsOpen: false,
-  favoritesFilter: "all",
+  favoritesFilter: "remaining",
   refreshState: "idle",
   toasts: [],
   loadingFavorites: false,

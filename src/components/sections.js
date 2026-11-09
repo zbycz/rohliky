@@ -60,7 +60,7 @@ function CategorySection(group) {
 }
 
 function FilterToggle() {
-  const current = data.favoritesFilter || "all";
+  const current = data.favoritesFilter || "remaining";
   const option = (value, label) =>
     h(
       "button",
