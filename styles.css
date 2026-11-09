@@ -735,7 +735,13 @@ table.products tr:last-child td {
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 8px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
+}
+
+.todo-row:hover {
+  background: var(--surface);
 }
 
 .todo-fill {
@@ -746,6 +752,10 @@ table.products tr:last-child td {
 
 .todo-row.draft {
   cursor: default;
+}
+
+.todo-row.draft:hover {
+  background: transparent;
 }
 
 .todo-thumbs {
