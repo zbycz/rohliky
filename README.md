@@ -257,6 +257,8 @@ proxy/wrangler.toml    konfig pro `wrangler deploy` workeru
 
 - `POST /services/frontend-service/login` → nastaví `PHPSESSION`
 - `GET  /api/v1/categories/favorite/products?page=&size=50&sort=recommended`
+  - do `productIds` vkládá reklamní produktové karty; které to jsou, říká pole
+    `interactiveProductCardAds` (jinak se v oblíbených objevují cizí produkty)
 - `GET  /api/v1/products/card?products=&products=&categoryType=favorite`
 - `GET  /api/v1/products/{id}/categories`
 - `GET  /services/frontend-service/v2/cart`

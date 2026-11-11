@@ -62,7 +62,10 @@ export async function getFavoriteIds() {
     });
     const payload = await request(`/api/v1/categories/favorite/products?${params}`);
     const batch = (payload && payload.productIds) || [];
-    ids.push(...batch);
+    // Rohlik vkládá do seznamu oblíbených reklamní produktové karty; ta pole
+    // `interactiveProductCardAds` označuje, které to jsou, a my je vynecháme.
+    const adIds = new Set(((payload && payload.interactiveProductCardAds) || []).map((ad) => ad.productId));
+    ids.push(...batch.filter((id) => !adIds.has(id)));
     if (batch.length < FAVORITE_PAGE_SIZE) break;
   }
   return ids;
